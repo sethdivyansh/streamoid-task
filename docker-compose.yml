@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: streamoid-app
+    ports:
+      - "${PORT}:8000"
+    environment:
+      PORT: ${PORT}
+      # Use Aiven PostgreSQL from .env file
+      PGHOST: ${PGHOST}
+      PGUSER: ${PGUSER}
+      PGPASSWORD: ${PGPASSWORD}
+      PGDATABASE: ${PGDATABASE}
+      PGPORT: ${PGPORT}
+      NODE_ENV: development
+    volumes:
+      - ./uploads:/app/uploads
+    restart: unless-stopped
