@@ -7,6 +7,32 @@ const { validateRow } = require('../lib/csvValidator');
 const router = express.Router();
 const upload = multer({ dest: 'uploads/' });
 
+// Helper function to parse pagination parameters
+const getPaginationParams = (query) => {
+    const page = Math.max(1, parseInt(query.page || '1', 10));
+    const limit = Math.min(100, Math.max(1, parseInt(query.limit || '20', 10)));
+    const offset = (page - 1) * limit;
+
+    return { page, limit, offset };
+};
+
+// Helper function to build pagination response
+const buildPaginationResponse = (data, page, limit, total) => {
+    const totalPages = Math.ceil(total / limit);
+
+    return {
+        data,
+        pagination: {
+            page,
+            limit,
+            total,
+            totalPages,
+            hasNext: page < totalPages,
+            hasPrev: page > 1
+        }
+    };
+};
+
 router.post('/upload', upload.any(), async (req, res) => {
     if (!req.files || req.files.length === 0) return res.status(400).json({ error: 'file is required' });
 
@@ -65,9 +91,7 @@ router.post('/upload', upload.any(), async (req, res) => {
 });
 
 router.get('/products', async (req, res) => {
-    const page = Math.max(0, parseInt(req.query.page || '0', 10));
-    const limit = Math.min(100, Math.max(1, parseInt(req.query.limit || '20', 10)));
-    const offset = page * limit;
+    const { page, limit, offset } = getPaginationParams(req.query);
 
     try {
         const rows = await knex('products')
@@ -76,10 +100,10 @@ router.get('/products', async (req, res) => {
             .limit(limit)
             .offset(offset);
 
-
         const [{ count }] = await knex('products').count('sku as count');
+        const total = parseInt(count, 10);
 
-        res.json({ data: rows, page, limit, total: parseInt(count, 10) });
+        res.json(buildPaginationResponse(rows, page, limit, total));
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'db_error', details: err.message });
@@ -87,17 +111,30 @@ router.get('/products', async (req, res) => {
 });
 
 router.get('/products/search', async (req, res) => {
+    const { page, limit, offset } = getPaginationParams(req.query);
+
     try {
-        const q = knex('products').select('*');
-        if (req.query.brand) q.where('brand', req.query.brand);
-        if (req.query.color) q.where('color', req.query.color);
-        if (req.query.minPrice) q.where('price', '>=', parseInt(req.query.minPrice, 10));
-        if (req.query.maxPrice) q.where('price', '<=', parseInt(req.query.maxPrice, 10));
+        // Build the base query for filtering
+        const baseQuery = knex('products');
+        if (req.query.brand) baseQuery.where('brand', req.query.brand);
+        if (req.query.color) baseQuery.where('color', req.query.color);
+        if (req.query.minPrice) baseQuery.where('price', '>=', parseInt(req.query.minPrice, 10));
+        if (req.query.maxPrice) baseQuery.where('price', '<=', parseInt(req.query.maxPrice, 10));
 
-        q.orderBy('sku', 'asc');
+        // Get the total count for pagination
+        const countQuery = baseQuery.clone().count('sku as count');
+        const [{ count }] = await countQuery;
+        const total = parseInt(count, 10);
 
-        const rows = await q;
-        res.json(rows);
+        // Get the paginated results
+        const rows = await baseQuery
+            .clone()
+            .select('*')
+            .orderBy('sku', 'asc')
+            .limit(limit)
+            .offset(offset);
+
+        res.json(buildPaginationResponse(rows, page, limit, total));
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'db_error', details: err.message });
