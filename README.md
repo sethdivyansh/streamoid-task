@@ -67,15 +67,27 @@ The application will be available at http://localhost:8000
 
 ## 📋 Available Scripts
 
+### Development
 - `npm start` - Start the production server
 - `npm run dev` - Start development server with auto-reload
 - `npm run migrate` - Run database migrations
 - `npm run rollback` - Rollback last migration
+
+### Testing
+- `npm test` - Run unit tests (56 tests - no database required)
+- `npm run test:all` - Run all tests including database tests
+- `npm run test:validator` - Run CSV validation tests
+- `npm run test:integration` - Run integration tests
+- `npm run test:query` - Run search filter logic tests
+- `npm run test:coverage` - Generate test coverage report
+- `npm run test:watch` - Run tests in watch mode
+
+### Docker
 - `npm run docker:up` - Start Docker containers
 - `npm run docker:down` - Stop Docker containers
 - `npm run docker:logs` - View Docker logs
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 streamoid/

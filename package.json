@@ -11,6 +11,12 @@
     "migrate": "npx knex migrate:latest --knexfile ./knexfile.js",
     "rollback": "npx knex migrate:rollback --knexfile ./knexfile.js",
     "seed": "npx knex seed:run --knexfile ./knexfile.js",
+        "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:validator": "jest test/csvValidator.test.js",
+    "test:parsing": "jest test/csvParsing.test.js", 
+    "test:filters": "jest test/searchFilters.test.js",
     "docker:build": "docker-compose build",
     "docker:up": "docker-compose up",
     "docker:down": "docker-compose down",
@@ -25,6 +31,8 @@
     "pg": "^8.10.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "jest": "^30.2.0",
+    "nodemon": "^2.0.22",
+    "supertest": "^7.1.4"
   }
 }
