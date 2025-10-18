@@ -2,17 +2,17 @@
 
 A Node.js/Express REST API with PostgreSQL for product management, featuring CSV bulk upload capabilities and advanced search functionality.
 
-## ✨ Features
+## Features
 
-- 🛍️ Complete CRUD operations for products
-- 📁 Bulk product upload via CSV files
-- � Advanced search and filtering
-- 📄 Pagination support
-- �🐳 Docker-ready deployment
-- ✅ CSV validation with detailed error reporting
-- 🔄 Automatic SKU-based upsert (insert or update)
+- Complete CRUD operations for products
+- Bulk product upload via CSV files
+- Advanced search and filtering
+- Pagination support
+- Docker-ready deployment
+- CSV validation with detailed error reporting
+- Automatic SKU-based upsert (insert or update)
 
-## 🐳 Docker Setup (Recommended)
+## Docker Setup (Recommended)
 
 The easiest way to run this application is using Docker:
 
@@ -29,7 +29,7 @@ docker-compose up --build
 
 The application will be available at http://localhost:8000
 
-## 🛠️ Local Development (Without Docker)
+## Local Development (Without Docker)
 
 ### Prerequisites
 
@@ -41,31 +41,31 @@ The application will be available at http://localhost:8000
 
 1. **Install dependencies:**
 
-   ```bash
-   npm install
-   ```
+  ```bash
+  npm install
+  ```
 
 2. **Configure environment variables:**
 
-   ```bash
-   cp .env.example .env
-   # Edit .env with your database credentials
-   ```
+  ```bash
+  cp .env.example .env
+  # Edit .env with your database credentials
+  ```
 
 3. **Run database migrations:**
 
-   ```bash
-   npm run migrate
-   ```
+  ```bash
+  npm run migrate
+  ```
 
 4. **Start the server:**
-   ```bash
-   npm start
-   # or for development with auto-reload:
-   npm run dev
-   ```
+  ```bash
+  npm start
+  # or for development with auto-reload:
+  npm run dev
+  ```
 
-## 📋 Available Scripts
+## Available Scripts
 
 ### Development
 - `npm start` - Start the production server
@@ -107,7 +107,7 @@ streamoid/
 └── uploads/              # File upload directory
 ```
 
-## 🔌 API Endpoints
+## API Endpoints
 
 ### Products
 
@@ -183,7 +183,7 @@ SKU001,Product Name,Brand Name,Red,M,2000,1500,100
 - Transaction-based processing
 - Detailed error reporting for failed rows
 
-## 🗄️ Database
+## Database
 
 This project uses PostgreSQL with Knex.js as the query builder and migration tool.
 
@@ -240,7 +240,7 @@ PGDATABASE=streamoid_db
 PGPORT=5432
 ```
 
-## � Usage Examples
+## Usage Examples
 
 ### Upload CSV File
 
@@ -327,10 +327,11 @@ Simply update the `.env` file with your database credentials.
 
 ISC
 
-## 👤 Author
+## Author
 
 Divyansh Seth
 
 ---
 
 **Note:** This project was developed as part of the Streamoid backend assessment task.
+
